@@ -1,0 +1,13 @@
+# Canonical CI/CD config for hanzoai/wagmi — read by hanzoai/ci (via
+# .hanzo/workflows/cicd.yml) and by platform.hanzo.ai.
+#
+# Library monorepo (pnpm). The gate builds the two packages that are the product
+# — @wagmi/core and wagmi — in dependency order, which is a full tsc declaration
+# emit for each, so a type error anywhere in their source fails it.
+#
+# The install is filtered to those packages. The unfiltered install pulls the
+# playgrounds (next, nuxt, solid-start, vue) and the docs site, which are demos:
+# several thousand extra packages that gate nothing.
+test:
+  - name: build
+    run: pnpm install --frozen-lockfile --filter @wagmi/core --filter wagmi && pnpm run --filter @wagmi/core --filter wagmi build
